@@ -11,7 +11,7 @@ public class DemoValidation {
         InvertedIndex idx = InvertedIndex.getInstance(tok);
 
         // Construir índice desde tu carpeta de documentos
-        String path = "C:\\Users\\sbsgo\\Downloads\\Proyecto Datos\\P1\\docsPrueba";
+        String path = "C:\\Users\\sbsgo\\OneDrive\\Documentos\\XuanZhi9\\a\\src\\main\\java\\documents";
         idx.buildFromPath(path);
 
         System.out.println("=== Lista de documentos ===");

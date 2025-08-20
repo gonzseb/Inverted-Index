@@ -8,7 +8,7 @@ public class DemoIndex {
         Tokenizer tok = new SpanishTokenizer();
         InvertedIndex idx = InvertedIndex.getInstance(tok);
 
-        idx.buildFromPath("C:\\Users\\sbsgo\\Downloads\\Proyecto Datos\\P1\\docsPrueba");
+        idx.buildFromPath("C:\\Users\\sbsgo\\OneDrive\\Documentos\\XuanZhi9\\a\\src\\main\\java\\documents");
         idx.printIndex();
     }
 }
