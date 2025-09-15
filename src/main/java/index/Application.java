@@ -4,7 +4,7 @@ import index.domain.ScoredDocument;
 import index.indexing.Indexer;
 import index.indexing.InvertedIndex;
 import index.structures.MyVector;
-import index.text.QueryProcessor;
+import index.indexing.QueryProcessor;
 import index.text.SpanishBasicNormalizer;
 import index.text.Stopwords;
 import index.text.Tokenizer;

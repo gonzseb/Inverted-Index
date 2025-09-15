@@ -21,7 +21,6 @@ public class Document {
 
     public void incrementLength() { length++; }
 
-
     public double getVectorNorm() { return vectorNorm; }
 
     public void setVectorNorm(double v) { this.vectorNorm = v; }

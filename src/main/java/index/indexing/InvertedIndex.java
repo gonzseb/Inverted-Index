@@ -13,6 +13,9 @@ public class InvertedIndex implements IInvertedIndex {
     private final MyHashTable<String, Term> table;
     private final DocumentRegistry documentRegistry;
 
+    private MyVector<Term> sortedTerms;
+    private boolean isSorted = false;
+
     public InvertedIndex(int hashCapacity) {
         this.table = new MyHashTable<>(hashCapacity);
         this.documentRegistry = new DocumentRegistry();
@@ -34,9 +37,16 @@ public class InvertedIndex implements IInvertedIndex {
         if (t == null) {
             t = new Term(token);
             table.put(token, t);
+            isSorted = false; // nueva inserción invalida orden
         }
         t.addOccurrence(docId);
         documentRegistry.getMetadata(docId).incrementLength();
+    }
+
+    @Override
+    public void removeTerm(String token) {
+        table.remove(token);
+        isSorted = false; // eliminación invalida orden
     }
 
     @Override
@@ -44,18 +54,19 @@ public class InvertedIndex implements IInvertedIndex {
 
     @Override
     public MyVector<Term> getAllTerms() {
-        MyVector<MyHashTable.MyEntry<String, Term>> entries = table.entries();
-        MyVector<Term> all = new MyVector<>();
-        MyVectorIterator<MyHashTable.MyEntry<String, Term>> it = entries.iterator();
-        while (it.hasNext()) all.add(it.next().value);
-        return all;
+        if (!isSorted) {
+            MyVector<MyHashTable.MyEntry<String, Term>> entries = table.entries();
+            sortedTerms = new MyVector<>();
+            MyVectorIterator<MyHashTable.MyEntry<String, Term>> it = entries.iterator();
+            while (it.hasNext()) sortedTerms.add(it.next().value);
+            lsdRadixSort(sortedTerms);
+            isSorted = true;
+        }
+        return sortedTerms;
     }
 
     @Override
     public int getDocumentCount() { return documentRegistry.size(); }
-
-    @Override
-    public void removeTerm(String token) { table.remove(token); }
 
     @Override
     public void computeDocumentVectorNorms() {
@@ -92,12 +103,6 @@ public class InvertedIndex implements IInvertedIndex {
             Document md = getDocumentMetadata(docId);
             if (md != null) md.setVectorNorm(norm);
         }
-    }
-
-    public MyVector<Term> getAllTermsSortedLSD() {
-        MyVector<Term> terms = getAllTerms();
-        lsdRadixSort(terms);
-        return terms;
     }
 
     // Implementación RadixSort LSD interna

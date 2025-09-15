@@ -1,7 +1,7 @@
 package index.structures;
 
 public class MyHashTable<K, V> {
-    MyVector<MyEntry<K, V>> table;
+    private MyVector<MyEntry<K, V>> table;
     private int capacity;
     private int size;
 
@@ -26,7 +26,7 @@ public class MyHashTable<K, V> {
                 entry.value = value;
                 return;
             }
-            idx = (idx + 1) % capacity;
+            idx = (idx + 1) & (capacity - 1);
         }
     }
 
@@ -36,7 +36,7 @@ public class MyHashTable<K, V> {
             MyEntry<K, V> entry = table.get(idx);
             if (entry == null) return null;
             if (entry.key.equals(key)) return entry.value;
-            idx = (idx + 1) % capacity;
+            idx = (idx + 1) & (capacity - 1);
         }
     }
 
@@ -60,34 +60,31 @@ public class MyHashTable<K, V> {
             if (entry.key.equals(key)) {
                 table.set(idx, null);
                 size--;
-                idx = (idx + 1) % capacity;
+                idx = (idx + 1) & (capacity - 1);
                 while (true) {
                     MyEntry<K, V> moved = table.get(idx);
                     if (moved == null) break;
                     table.set(idx, null);
                     size--;
                     put(moved.key, moved.value);
-                    idx = (idx + 1) % capacity;
+                    idx = (idx + 1) & (capacity - 1);
                 }
                 return;
             }
-            idx = (idx + 1) % capacity;
+            idx = (idx + 1) & (capacity - 1);
         }
     }
 
     private int hash(K key) {
         int h = polynomialHash(key.toString());
-        // Garantizar entero positivo
         h = h & 0x7fffffff;
-        // Mapear al rango [0, capacity-1] usando AND con (capacity-1)
         return h & (capacity - 1);
     }
 
     private int polynomialHash(String s) {
         int h = 0, p = 31;
-        int MOD = 0x7fffffff; // 2^31-1
         for (int i = 0; i < s.length(); i++) {
-            h = (int)(((long)h * p + s.charAt(i)) % MOD);
+            h = h * p + s.charAt(i);
         }
         return h;
     }
@@ -100,6 +97,7 @@ public class MyHashTable<K, V> {
         }
         this.table = newTable.table;
         this.capacity = newTable.capacity;
+        this.size = newTable.size;
     }
 
     private int nextPowerOfTwo(int n) {
