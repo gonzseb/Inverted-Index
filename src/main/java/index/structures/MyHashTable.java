@@ -40,7 +40,6 @@ public class MyHashTable<K, V> {
         }
     }
 
-    public boolean containsKey(K key) { return get(key) != null; }
     public int size() { return size; }
 
     public MyVector<MyEntry<K, V>> entries() {
@@ -75,18 +74,18 @@ public class MyHashTable<K, V> {
         }
     }
 
-    private int hash(K key) {
-        int h = polynomialHash(key.toString());
-        h = h & 0x7fffffff;
-        return h & (capacity - 1);
-    }
-
     private int polynomialHash(String s) {
-        int h = 0, p = 31;
+        int h = 0, p = 31; // número primo 31 más que válidos, de la clase xd
         for (int i = 0; i < s.length(); i++) {
             h = h * p + s.charAt(i);
         }
         return h;
+    }
+
+    private int hash(K key) {
+        int h = polynomialHash(key.toString());
+        h = h & 0x7fffffff;
+        return h & (capacity - 1);
     }
 
     private void resize() {

@@ -29,7 +29,7 @@ public class Indexer {
 
         ZipfFilter.apply(index, zipfPercentToRemove);
 
-        index.computeDocumentVectorNorms(); // precomputar normas euclidianas
+        index.computeDocumentVectorNorms(); // Pre-computar normas euclidianas
     }
 
     private boolean isTextFile(File f) {

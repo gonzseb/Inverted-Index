@@ -12,6 +12,7 @@ public class MyVector<T> {
         size = 0;
     }
 
+    // Añadir al final O(1) amortizado, si el arreglo se llena, puntualmente tomaría O(n)
     public void add(T element) {
         if (size == data.length) resize();
         data[size++] = element;
@@ -28,16 +29,10 @@ public class MyVector<T> {
         return (T) data[index];
     }
 
-    public void removeAt(int index) {
-        checkIndex(index);
-        for (int i = index + 1; i < size; i++) data[i - 1] = data[i];
-        size--;
-        data[size] = null;
-    }
-
     public int size() { return size; }
     public boolean isEmpty() { return size == 0; }
 
+    // O(n)
     private void resize() {
         int newCap = data.length * 2;
         Object[] nd = new Object[newCap];

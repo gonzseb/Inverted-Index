@@ -89,7 +89,7 @@ public class QueryProcessor implements IQueryProcessor {
         return topKResults(results, topK);
     }
 
-    // --- Búsqueda binaria sobre el vector de términos ordenado ---
+    // --- Binary Search sobre el vector de términos ordenado ---
     private Term binarySearchTerm(MyVector<Term> sortedTerms, String token) {
         int low = 0, high = sortedTerms.size() - 1;
         while (low <= high) {

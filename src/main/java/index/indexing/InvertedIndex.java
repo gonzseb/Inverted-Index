@@ -12,7 +12,6 @@ import index.structures.MyVectorIterator;
 public class InvertedIndex implements IInvertedIndex {
     private final MyHashTable<String, Term> table;
     private final DocumentRegistry documentRegistry;
-
     private MyVector<Term> sortedTerms;
     private boolean isSorted = false;
 
@@ -46,7 +45,7 @@ public class InvertedIndex implements IInvertedIndex {
     @Override
     public void removeTerm(String token) {
         table.remove(token);
-        isSorted = false; // eliminación invalida orden
+        isSorted = false; // eliminación invalida el orden del índice!
     }
 
     @Override
@@ -110,7 +109,7 @@ public class InvertedIndex implements IInvertedIndex {
         if (arr.isEmpty()) return;
         int N = arr.size();
         int R = 27; // 26 letras + vacío
-        int maxLen = 15;
+        int maxLen = 20;
 
         MyVector<Term> aux = new MyVector<>(N);
         for (int i = 0; i < N; i++) aux.add(null);

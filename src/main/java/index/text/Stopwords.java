@@ -248,6 +248,7 @@ public class Stopwords {
             String n = norm.normalize(s);
             if (!n.isEmpty()) sw.add(n);
         }
+
         return sw;
     }
 }
